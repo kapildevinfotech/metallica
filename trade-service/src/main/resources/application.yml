@@ -1,0 +1,25 @@
+server:
+  port: ${PORT:0}
+ 
+eureka:
+  client:
+    service-url:
+      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+  
+  instance:
+    hostname: localhost
+    non-secure-port: 80
+          
+spring:
+    
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/metallica-trade-db
+    username: kyada3
+    password: admin
+    
+  jpa:
+    hibernate:
+      ddl-auto: create-drop 
+
+  
