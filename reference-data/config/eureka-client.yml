@@ -1,0 +1,29 @@
+--- 
+instance: 
+  instanceId: NOIkyada369053.sapient.com:reference-data-service:8081
+  app: reference-data-service
+  dataCenterInfo: 
+    ? "@class"
+    : com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo
+    name: MyOwn
+  hostName: NOIkyada369053.sapient.com
+  ipAddr: "192.168.1.100"
+  port: 
+    $: 8081
+    ? "@enabled"
+    : "true"
+  securePort:
+    $: 443
+    ? "@enabled"
+    : "false"
+  homePageUrl: "http://NOIkyada369053.sapient.com:8081"
+  healthCheckUrl : "http://NOIkyada369053.sapient.com:8081/health"  
+  statusPageUrl: "http://localhost:8081/info" 
+  vipAddress: reference-data-service
+
+
+eureka:
+  host: localhost
+  port: 8761
+  servicePath: /eureka/apps/
+

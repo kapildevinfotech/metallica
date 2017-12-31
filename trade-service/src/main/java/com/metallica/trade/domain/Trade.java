@@ -1,12 +1,17 @@
 package com.metallica.trade.domain;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Trade {
 	@Id @GeneratedValue
 	private long id;
@@ -14,7 +19,7 @@ public class Trade {
 	private Side side;
 	private int quantity;
 	private  double price;
-	private LocalDate tradeDate;
+	private Date tradeDate;
 	private TradeStatus status;
 	
 	public long getId() {
@@ -28,7 +33,7 @@ public class Trade {
 	public Trade() {
 	}
 	
-	public Trade(Side side,int quantity,double price,LocalDate tradeDate,TradeStatus status) {
+	public Trade(Side side,int quantity,double price,Date tradeDate,TradeStatus status) {
 		this.side=side;
 		this.quantity=quantity;
 		this.price=price;
@@ -54,10 +59,10 @@ public class Trade {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public LocalDate getTradeDate() {
+	public Date getTradeDate() {
 		return tradeDate;
 	}
-	public void setTradeDate(LocalDate tradeDate) {
+	public void setTradeDate(Date tradeDate) {
 		this.tradeDate = tradeDate;
 	}
 	public TradeStatus getStatus() {
@@ -65,5 +70,15 @@ public class Trade {
 	}
 	public void setStatus(TradeStatus status) {
 		this.status = status;
+	}
+	
+	@Override
+	public String toString() {
+		return String.join(",", side.toString(),String.valueOf(quantity),
+				String.valueOf(price),tradeDate.toString(),status.toString());
+	}
+	
+	public String toJson() throws JsonProcessingException{
+		return new ObjectMapper().writeValueAsString(this);
 	}
 }
