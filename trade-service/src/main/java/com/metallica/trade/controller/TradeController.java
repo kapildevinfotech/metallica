@@ -27,8 +27,8 @@ public class TradeController {
 	
 	@PostMapping(path="/trade")
 	void createTrade(@RequestBody Trade trade) throws Exception{
-		System.out.println("Trade creating  :" +trade);
 		tradeService.createTrade(trade);
-		messageProducer.sendMesage(NotificationType.TRADE_CREATED, trade.toJson());
+		System.out.println("Trade created  :" +trade);
+		messageProducer.sendMesage(NotificationType.TRADE_CREATED,trade.toJson());
 	}
 }

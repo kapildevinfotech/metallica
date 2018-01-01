@@ -2,6 +2,10 @@ package com.metallica.clients.trade;
 
 import java.util.Date;
 
+import com.metallica.clients.refdata.Commodity;
+import com.metallica.clients.refdata.Counterparty;
+import com.metallica.clients.refdata.Location;
+
 public class Trade {
 	private long id;
 	private Side side;
@@ -9,6 +13,10 @@ public class Trade {
 	private  double price;
 	private Date tradeDate;
 	private TradeStatus status;
+	
+	private Commodity commodity;
+	private Location location;
+	private Counterparty counterparty;
 	
 	public long getId() {
 		return id;
@@ -50,5 +58,29 @@ public class Trade {
 	}
 	public void setStatus(TradeStatus status) {
 		this.status = status;
+	}
+
+	public Commodity getCommodity() {
+		return commodity;
+	}
+
+	public void setCommodity(Commodity commodity) {
+		this.commodity = commodity;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public Counterparty getCounterparty() {
+		return counterparty;
+	}
+
+	public void setCounterparty(Counterparty counterparty) {
+		this.counterparty = counterparty;
 	}
 }

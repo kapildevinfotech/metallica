@@ -1,11 +1,8 @@
 package com.metallica.mq;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,17 +14,10 @@ public class Producer {
 		this.messagingTemplate = messagingTemplate;
 	}
 
-	public void sendMesage(NotificationType notificationType,String message) throws Exception {
-		Message AMQPmessage = new Message(UUID.randomUUID().toString(),notificationType,
-				message, new Date());
-
-		Map<String, Object> headers = new HashMap<>();
-		headers.put("notification-id", AMQPmessage.getId());
-
-		this.messagingTemplate.convertAndSend(RabbitMqApplication.NOTIFICATIONS,
-				AMQPmessage, headers, messageTxt -> {
-					System.out.println("sending " + messageTxt.getPayload().toString());
-					return messageTxt;
-				});
+	public void sendMesage(NotificationType notificationType,String notification) throws Exception {
+		Message<String> message = MessageBuilder.withPayload(notification)
+		        .setHeader("notification-type", notificationType)
+		        .build();
+		messagingTemplate.send(RabbitMqApplication.NOTIFICATIONS, message);
 	}
 }

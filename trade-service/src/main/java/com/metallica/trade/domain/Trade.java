@@ -2,13 +2,19 @@ package com.metallica.trade.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.metallica.refdata.domain.Commodity;
+import com.metallica.refdata.domain.Counterparty;
+import com.metallica.refdata.domain.Location;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -21,6 +27,18 @@ public class Trade {
 	private  double price;
 	private Date tradeDate;
 	private TradeStatus status;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="TRADE_COMMODITY_ID")
+	private Commodity commodity;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="TRADE_LOCATION_ID")
+	private Location location;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="TRADE_COUNTERPARTY_ID")
+	private Counterparty counterparty;
 	
 	public long getId() {
 		return id;
@@ -72,6 +90,30 @@ public class Trade {
 		this.status = status;
 	}
 	
+	public Commodity getCommodity() {
+		return commodity;
+	}
+
+	public void setCommodity(Commodity commodity) {
+		this.commodity = commodity;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public Counterparty getCounterparty() {
+		return counterparty;
+	}
+
+	public void setCounterparty(Counterparty counterparty) {
+		this.counterparty = counterparty;
+	}
+
 	@Override
 	public String toString() {
 		return String.join(",", side.toString(),String.valueOf(quantity),
