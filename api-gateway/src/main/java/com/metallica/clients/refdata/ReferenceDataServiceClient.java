@@ -1,5 +1,7 @@
 package com.metallica.clients.refdata;
 
+import java.util.List;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -7,12 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface ReferenceDataServiceClient {
 	
 	@GetMapping(path="/commodity")
-	public Commodity getAllCommodity();
+	public List<Commodity> getAllCommodity();
 	
 	@GetMapping(path="/location")
-	public Location getAllLocation();
+	public List<Location> getAllLocation();
 	
 	@GetMapping(path="/counterparty")
-	public Counterparty getAllCounterparty();
+	public List<Counterparty> getAllCounterparty();
 	
 }

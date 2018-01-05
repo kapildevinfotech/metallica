@@ -24,8 +24,8 @@ function processMesage(notification){
     var eventType; 
     if(notificationType.startsWith('TRADE')){
         eventType='trade';
-    }else if (notificationType.starstWith('MARKET-DATA')){
-        eventType='marketData';
+    }else if (notificationType.startsWith('TICKER')){
+        eventType='ticker';
     }
     io.sockets.emit(eventType,msg);
 }
@@ -38,8 +38,8 @@ io.on('connection', function(socket){
     socket.on('trade', function(msg){
       io.emit('trade', msg);
     });
-    socket.on('marketData', function(msg){
-        io.emit('marketData', msg);
+    socket.on('ticker', function(msg){
+        io.emit('ticker', msg);
       });
   });
 
