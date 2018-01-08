@@ -7,9 +7,9 @@ export class App extends Component{
 
     render(){
         return (
-            <div>
-                <Header title="Metallica App"/>  
-                <Trade></Trade>    
+            <div className="container">
+               <Header/>
+                <Trade/>
                 <Footer year={2018}></Footer>
             </div>
         )

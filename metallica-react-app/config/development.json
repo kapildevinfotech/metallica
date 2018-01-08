@@ -1,4 +1,7 @@
 {
     "apiEndPoint": "http://localhost:7070",
-    "authEndPoint": "http://localhost:7070/oauth/token"
+    "authEndPoint": "http://localhost:7070/oauth/token",
+    "commodityRefDataServiceEndPoint":"http://localhost:9023/reference-data-service/commodity",
+    "locationRefDataServiceEndPoint":"http://localhost:9023/reference-data-service/location",
+    "counterpartyRefDataServiceEndPoint":"http://localhost:9023/reference-data-service/counterparty"
 }

@@ -5,4 +5,6 @@ export const DELETE_TRADE  = "TRADE.DELETE";
 export const SERACH_TRADES = "TRADE.SEARCH";
 
 export const UPDATE_TICKER = "TICKER.UPDATE";
+export const REF_DATA_INIT = "REFDATA.INIT_DATA";
+export const REF_DATA_INIT_LOADING = "REFDATA.INIT_LOADING";
 

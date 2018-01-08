@@ -22,9 +22,9 @@ class RefDataService{
 
 function findDocuments(documentName,callback){
     const collection = mongoDbClient.getMongoDb().collection(documentName);
-    collection.find({}).toArray(function(err, docs) {
-        console.log(docs);
-        callback(null,docs);
+        collection.find({}).toArray(function(err, docs) {
+         console.log(docs);
+         callback(null,docs);
       });
 }
 

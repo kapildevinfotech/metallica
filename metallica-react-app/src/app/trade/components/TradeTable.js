@@ -10,27 +10,27 @@ export default class TradeTable extends Component{
         }
 
         return (
-            <div className="row">
-            <table className="table-hover">
+            <div className="row thumbnail">
+            <table className="table table-hover">
                 <thead>
                     <tr>
-                        <th>Trade Date</th>
-                        <th>Commodity</th>
-                        <th>Side</th>
-                        <th>Qty(MT)</th>
-                        <th>Price (/MT)</th>
-                        <th>Counterparty</th>
-                        <th>Location</th>
+                        <th scope="col">Trade Date</th>
+                        <th scope="col">Commodity</th>
+                        <th scope="col">Side</th>
+                        <th scope="col">Qty(MT)</th>
+                        <th scope="col">Price (/MT)</th>
+                        <th scope="col">Counterparty</th>
+                        <th scope="col">Location</th>
                     </tr>
                 </thead>
                 <tbody>
-                {
-                       trades.map( trade => (
-                           <TradeRow trade={trade} 
-                                     key={trade.id}>
-                            </TradeRow>
-                       ))
-                }
+                    {
+                        trades.map( trade => (
+                            <TradeRow trade={trade} 
+                                        key={trade.id}>
+                                </TradeRow>
+                        ))
+                    }
                 </tbody>
             </table>
             </div>
