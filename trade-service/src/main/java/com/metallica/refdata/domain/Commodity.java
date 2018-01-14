@@ -1,6 +1,5 @@
 package com.metallica.refdata.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +8,7 @@ import javax.persistence.Id;
 @Entity
 public class Commodity {
 	
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	private String code;
 	private String description;
@@ -22,8 +22,6 @@ public class Commodity {
 		this.description=description;
 	}
 	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="COMMODITY_ID")
 	public long getId() {
 		return id;
 	}

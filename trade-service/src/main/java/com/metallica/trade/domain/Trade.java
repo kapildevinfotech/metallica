@@ -2,14 +2,12 @@ package com.metallica.trade.domain;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -40,16 +38,13 @@ public class Trade {
 	@Enumerated(EnumType.STRING)
 	private TradeStatus status;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="TRADE_COMMODITY_ID")
+	@ManyToOne
 	private Commodity commodity;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="TRADE_LOCATION_ID")
+	@ManyToOne
 	private Location location;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="TRADE_COUNTERPARTY_ID")
+	@ManyToOne
 	private Counterparty counterparty;
 	
 	public long getId() {
