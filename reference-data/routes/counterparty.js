@@ -7,7 +7,6 @@ router.get('/', function (req, res,next) {
         if(err){
             res.status(500).send({error:'Unable to fetch locations'});
         }else{
-            res.header({'Access-Control-Allow-Origin': '*'});
             res.send(results);
         }
     });

@@ -1,10 +1,11 @@
 package com.metallica.marketdata.domain;
 
-import java.util.function.Function;
-
-import com.sun.jersey.core.header.AcceptableLanguageTag;
+import java.text.DecimalFormat;
+import java.util.Random;
 
 public class Ticker {
+	transient DecimalFormat df = new DecimalFormat("#.###");
+	
 	private Commodity commodity;
 	private double price;
 	private double changeInPrice;
@@ -38,6 +39,11 @@ public class Ticker {
 	}
 	public void setChangeInPrice(double changeInPrice) {
 		this.changeInPrice = changeInPrice;
+	}
+	
+	public void mockPrice(){
+		changeInPrice=new Random().nextInt(20)-5;
+		price+=changeInPrice;
 	}
 	
 	@Override

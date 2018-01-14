@@ -7,5 +7,8 @@ import com.metallica.trade.domain.Trade;
 public interface TradeService {
 	Trade getTradesById(long id);
 	List<Trade> getAllTrades();
-	void createTrade(Trade trade);
+	Trade createTrade(Trade trade);
+	List<Trade> deleteTradeById(long id);
+	List<Trade> serachTrade(String search);
+	
 }

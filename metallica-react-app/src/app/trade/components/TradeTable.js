@@ -2,15 +2,19 @@ import React,{Component} from "react";
 import TradeRow from "./TradeRow";
 
 export default class TradeTable extends Component{
+    
     render(){
-        
-        let {trades} = this.props;
-        if(!trades){
-            trades=[];
+        let {loading,trades} = this.props;
+        if(loading==undefined || loading==true){
+            return (
+                <div>
+                    {loading}
+                </div>
+            )
         }
 
         return (
-            <div className="row thumbnail">
+            
             <table className="table table-hover">
                 <thead>
                     <tr>
@@ -26,14 +30,13 @@ export default class TradeTable extends Component{
                 <tbody>
                     {
                         trades.map( trade => (
-                            <TradeRow trade={trade} 
-                                        key={trade.id}>
-                                </TradeRow>
+                            <TradeRow key={trade.id} trade={trade} 
+                                    deleteTrade={this.props.actions.deleteTrade}/>
                         ))
                     }
                 </tbody>
             </table>
-            </div>
+            
         )
     }
 }

@@ -4,11 +4,16 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,10 +27,17 @@ public class Trade {
 	@Id @GeneratedValue
 	private long id;
 	
+	@Enumerated(EnumType.STRING)
 	private Side side;
+	
 	private int quantity;
 	private  double price;
+	
+	@JsonFormat(pattern="yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Date tradeDate;
+	
+	@Enumerated(EnumType.STRING)
 	private TradeStatus status;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -51,12 +63,16 @@ public class Trade {
 	public Trade() {
 	}
 	
-	public Trade(Side side,int quantity,double price,Date tradeDate,TradeStatus status) {
+	public Trade(Side side,int quantity,double price,Date tradeDate,TradeStatus status,
+			Commodity commodity,Location location,Counterparty counterparty) {
 		this.side=side;
 		this.quantity=quantity;
 		this.price=price;
 		this.tradeDate=tradeDate;
 		this.status=status;
+		this.commodity=commodity;
+		this.counterparty=counterparty;
+		this.location=location;
 	}
 	
 	public Side getSide() {

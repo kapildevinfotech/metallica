@@ -1,6 +1,8 @@
 package com.metallica.mq;
 
+import java.sql.Time;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +48,27 @@ public class MarketDataServiceApplication {
 			List<Ticker> tickerList=commodityList.stream().map(commodity -> tickerFactory.apply(commodity, 100.00, 1.00)).collect(Collectors.toList());
 			System.out.println("Ticker List : " + tickerList);
 			
-			//push to Rabbit MQ
-			messageProducer.sendMesage(NotificationType.TICKER, new ObjectMapper().writeValueAsString(tickerList));
+			//push to Rabbit MQ Dummy Data at initialization / Now initialization id done at React App only
+			//messageProducer.sendMesage(NotificationType.TICKER, new ObjectMapper().writeValueAsString(tickerList));
+			
+			//Mock Feed of Change in Price
+			Runnable mockPriceChange = () -> {
+				for (;;) {
+					try {
+						for (Ticker ticker : tickerList) {
+							ticker.mockPrice();
+							messageProducer.sendMesage(NotificationType.TICKER_UPDATED,
+											new ObjectMapper().writeValueAsString(ticker));
+							TimeUnit.SECONDS.sleep(5);
+						}
+						TimeUnit.SECONDS.sleep(15);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			new Thread(mockPriceChange).start();
+			
 		};
 	}
 }

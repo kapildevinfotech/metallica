@@ -16,6 +16,11 @@ public class Counterparty {
 	
 	}
 	
+	public Counterparty(String code,String description) {
+		this.code=code;
+		this.description=description;
+	}
+	
 	public long getId() {
 		return id;
 	}

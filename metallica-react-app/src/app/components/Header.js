@@ -1,12 +1,18 @@
 import React, {Component} from "react";
 import {NavLink} from "react-router-dom";
-import Ticker from "../trade/containers/Ticker";
+import TickerPanel from "./TickerPanel";
+import Navbar from "./Navbar";
 
 export default class Header extends Component{
     render(){
        return(
-             <div>
-                <Ticker></Ticker>
+             <div className="row">
+                   <div className="row thumbnail">
+                        <TickerPanel />
+                    </div>
+                    <div>
+                        <Navbar/>                        
+                    </div>
             </div> 
         )
     }

@@ -6,7 +6,8 @@ import * as actions from "../state/action";
 
 const mapStateToProps = (state) => {
     return {
-        trades: state.trades
+        loading:state.tradeData.loading,
+        trades: state.tradeData.trades
     }
 }
 

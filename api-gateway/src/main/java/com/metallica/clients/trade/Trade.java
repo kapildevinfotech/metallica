@@ -13,7 +13,6 @@ public class Trade {
 	private  double price;
 	private Date tradeDate;
 	private TradeStatus status;
-	
 	private Commodity commodity;
 	private Location location;
 	private Counterparty counterparty;

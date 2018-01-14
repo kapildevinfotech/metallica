@@ -4,10 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name="location")
 public class Location {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
@@ -16,6 +14,11 @@ public class Location {
 	
 	public Location() {
 	
+	}
+	
+	public Location(String code,String description) {
+		this.code=code;
+		this.description=description;
 	}
 	
 	public long getId() {
