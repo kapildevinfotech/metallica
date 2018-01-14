@@ -38,7 +38,7 @@ export default class TradeSearch extends Component{
         const search="tradeDate>"+this.state.tradeToDate+",tradeDate<"+this.state.tradeFromDate+
         ",commodity:"+commodity_code+",side:"+this.state.side+",counterparty:"+counterparty_code+
         ",location:"+location_code; 
-        
+                
         console.log('Trade to Search : ' , search);
         this.props.actions.searchTrade(search);
     }

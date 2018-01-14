@@ -11,7 +11,7 @@ export const createTradeAction=(trade) => {
     }
 }
 
-export const searchTradeAction=(trade) => {
+export const searchTradeAction=(trades) => {
     return {
         type: ActionTypes.SERACH_TRADES,
         payload: {
