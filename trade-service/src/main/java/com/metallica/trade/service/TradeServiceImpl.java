@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.metallica.mq.NotificationType;
+import com.metallica.mq.Producer;
 import com.metallica.trade.domain.Side;
 import com.metallica.trade.domain.Trade;
 import com.metallica.trade.repository.CommodityRepository;
@@ -33,6 +35,9 @@ public class TradeServiceImpl implements TradeService {
 	@Autowired
 	private CounterPartyRepository counterPartyRepository;
 	
+	@Autowired
+	private Producer messageProducer;
+	
 	@Override
 	public Trade getTradesById(long id) {
 		return tradeRepository.getOne(id);
@@ -44,18 +49,38 @@ public class TradeServiceImpl implements TradeService {
 	}
 
 	@Override
-	public Trade createTrade(Trade trade) {
+	public Trade createTrade(Trade trade) throws Exception {
 		trade.setCommodity(commodityRepository.findByCode(trade.getCommodity().getCode()));
 		trade.setCounterparty(counterPartyRepository.findByCode(trade.getCounterparty().getCode()));
 		trade.setLocation(locationRepository.findByCode(trade.getLocation().getCode()));
-		return tradeRepository.save(trade);
+		Trade tradeCreated=tradeRepository.save(trade);
+		if(tradeCreated!=null){
+			pushEventToMQ(NotificationType.TRADE_CREATED,trade);
+		}
+		return tradeCreated;
 	}
 
 	@Override
-	public List<Trade> deleteTradeById(long id) {
-		return tradeRepository.removeById(id);
+	public List<Trade> deleteTradeById(long id) throws Exception {
+		List<Trade> tradeDeleted=tradeRepository.removeById(id);
+		if(tradeDeleted!=null && tradeDeleted.size()==1){
+			pushEventToMQ(NotificationType.TRADE_DELETED,tradeDeleted.get(0));
+		}
+		return tradeDeleted;
 	}
 
+	@Override
+	public Trade updateTrade(Trade trade) throws Exception {
+		trade.setCommodity(commodityRepository.findByCode(trade.getCommodity().getCode()));
+		trade.setCounterparty(counterPartyRepository.findByCode(trade.getCounterparty().getCode()));
+		trade.setLocation(locationRepository.findByCode(trade.getLocation().getCode()));
+		Trade tradeUpdated=tradeRepository.save(trade);
+		if(tradeUpdated!=null){
+			pushEventToMQ(NotificationType.TRADE_UPDATED,trade);
+		}
+		return tradeUpdated;
+	}
+	
 	@Override
 	public List<Trade> serachTrade(String search) {
 		TardeSpecificationsBuilder builder = new TardeSpecificationsBuilder();
@@ -83,4 +108,9 @@ public class TradeServiceImpl implements TradeService {
 		Specification<Trade> spec = builder.build();
 		return tradeRepository.findAll(spec);
 	}
+	
+	private void pushEventToMQ(NotificationType notificationType,Trade trade) throws Exception {
+		messageProducer.sendMesage(notificationType,trade.toJson());
+	}
+
 }

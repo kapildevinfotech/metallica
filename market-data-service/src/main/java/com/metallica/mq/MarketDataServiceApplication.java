@@ -1,7 +1,8 @@
 package com.metallica.mq;
 
-import java.sql.Time;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -19,8 +20,12 @@ import com.metallica.marketdata.domain.Commodity;
 import com.metallica.marketdata.domain.Ticker;
 import com.metallica.marketdata.domain.TickerFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @SpringBootApplication
 public class MarketDataServiceApplication {
+	private static final Logger logger = LoggerFactory.getLogger(MarketDataServiceApplication.class);
 	
 	@Autowired
 	private Producer messageProducer;
@@ -41,34 +46,29 @@ public class MarketDataServiceApplication {
 			String commodityJson= restTemplate.getForObject(
 					"http://localhost:9023/reference-data-service/commodity",String.class);
 			List<Commodity> commodityList= new ObjectMapper().readValue(commodityJson, new TypeReference<List<Commodity>>(){});
-			System.out.println("List of commodity fetched form ref data service : "+commodityList);
+			logger.info("List of commodity fetched form ref data service : "+commodityList);
 			
 			//fetch last open, close price from mongoDb
 			TickerFactory<Commodity, Double, Double, Ticker> tickerFactory= Ticker::new;
 			List<Ticker> tickerList=commodityList.stream().map(commodity -> tickerFactory.apply(commodity, 100.00, 1.00)).collect(Collectors.toList());
-			System.out.println("Ticker List : " + tickerList);
-			
-			//push to Rabbit MQ Dummy Data at initialization / Now initialization id done at React App only
-			//messageProducer.sendMesage(NotificationType.TICKER, new ObjectMapper().writeValueAsString(tickerList));
+			logger.info("Ticker List : " + tickerList);
 			
 			//Mock Feed of Change in Price
-			Runnable mockPriceChange = () -> {
-				for (;;) {
+			final Runnable mockPriceChange = () -> {
+				for (Ticker ticker : tickerList) {
+					ticker.mockPrice();
 					try {
-						for (Ticker ticker : tickerList) {
-							ticker.mockPrice();
-							messageProducer.sendMesage(NotificationType.TICKER_UPDATED,
-											new ObjectMapper().writeValueAsString(ticker));
-							TimeUnit.SECONDS.sleep(5);
-						}
-						TimeUnit.SECONDS.sleep(15);
+						messageProducer.sendMesage(NotificationType.TICKER_UPDATED,
+										new ObjectMapper().writeValueAsString(ticker));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			};
-			new Thread(mockPriceChange).start();
-			
+	
+			ScheduledExecutorService scheduledExecutorService= Executors.newScheduledThreadPool(1);
+			scheduledExecutorService.scheduleWithFixedDelay(mockPriceChange, 0,10,TimeUnit.SECONDS);
+			//scheduledExecutorService.shutdown();
 		};
 	}
 }

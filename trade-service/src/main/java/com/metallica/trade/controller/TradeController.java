@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.metallica.mq.NotificationType;
-import com.metallica.mq.Producer;
 import com.metallica.trade.domain.Trade;
 import com.metallica.trade.service.TradeService;
 
@@ -21,9 +20,6 @@ import com.metallica.trade.service.TradeService;
 public class TradeController {
 	@Autowired
 	private TradeService tradeService;
-	
-	@Autowired
-	private Producer messageProducer;
 	
 	@GetMapping(path="/")
 	public List<Trade> getAllTrades(){
@@ -35,15 +31,24 @@ public class TradeController {
 		return tradeService.getTradesById(id);
 	}
 	
+	@PutMapping(path="/trade/")
+	public Trade getTradeById(@RequestBody Trade trade) throws Exception{
+		return tradeService.updateTrade(trade);
+	}
+	
 	@DeleteMapping(path="/trade/{id}")
-	public List<Trade> deleteTradeById(@PathVariable long id){
+	public List<Trade> deleteTradeById(@PathVariable long id) throws Exception{
 		return tradeService.deleteTradeById(id);
 	}
 	
 	@PostMapping(path="/trade")
 	public Trade createTrade(@RequestBody Trade trade) throws Exception{
-		messageProducer.sendMesage(NotificationType.TRADE_CREATED,trade.toJson());
 		return tradeService.createTrade(trade);
+	}
+	
+	@PutMapping(path="/trade")
+	public Trade editTrade(@RequestBody Trade trade) throws Exception{
+		return tradeService.updateTrade(trade);
 	}
 	
 	@GetMapping(path="/search")

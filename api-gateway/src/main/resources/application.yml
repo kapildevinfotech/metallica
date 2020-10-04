@@ -2,6 +2,11 @@
 server:
   port: ${PORT:9023}
 
+management:
+  contextPath: /management
+  security:  
+    enabled: false
+    
 eureka:
   client:
     serviceUrl:
@@ -14,5 +19,18 @@ eureka:
 ---
 spring:
   profiles: cloud
-  
+
+security:
+    oauth2:
+        client:
+            clientId: 1906887479623270
+            clientSecret: 4e4e841e59875ec0cb9f259c11d8a109
+            accessTokenUri: https://graph.facebook.com/oauth/access_token
+            userAuthorizationUri: https://www.facebook.com/dialog/oauth
+            tokenName: oauth_token
+            authenticationScheme: query
+            clientAuthenticationScheme: form
+        resource:
+            userInfoUri: https://graph.facebook.com/me
+            preferTokenInfo: false
 

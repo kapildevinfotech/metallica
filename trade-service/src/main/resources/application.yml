@@ -5,14 +5,26 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-  
+
+logging:
+  level:
+    root: INFO        
+    org:
+      springframework:
+        security: DEBUG
+        web: ERROR    
+      hibernate: DEBUG        
+      apache:
+        commons:
+          dbcp2: DEBUG 
+              
 ---          
 spring:
     
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/metallica-trade-db
-    username: kyada3
+    username: kapyadav
     password: admin
     
   jpa:
@@ -20,11 +32,8 @@ spring:
       ddl-auto: create-drop
   
         
-  
   jackson:
     serialization:
-      WRITE_DATES_AS_TIMESTAMPS: false     
-      
- 
-
+      WRITE_DATES_AS_TIMESTAMPS: false      
+    
   

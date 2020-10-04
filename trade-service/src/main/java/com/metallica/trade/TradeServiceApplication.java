@@ -10,6 +10,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.metallica.refdata.domain.Commodity;
 import com.metallica.refdata.domain.Counterparty;
@@ -26,6 +27,7 @@ import com.metallica.trade.repository.TradeRepository;
 @EntityScan("com.metallica")
 @SpringBootApplication
 @EnableEurekaClient
+@RestController
 public class TradeServiceApplication {
 
 	public static void main(String[] args) {
@@ -56,6 +58,8 @@ public class TradeServiceApplication {
 			counterPartyRepo.save(ipsum);
 			Counterparty lorem=new Counterparty("Lorem","Lorem");
 			counterPartyRepo.save(lorem);
+			Counterparty dolor=new Counterparty("Dolor","Dolor");
+			counterPartyRepo.save(dolor);
 			
 			Trade trade1=new Trade(Side.SELL,34,98,new Date(),TradeStatus.OPEN,
 					commodityRepo.findByCode("AL"),
